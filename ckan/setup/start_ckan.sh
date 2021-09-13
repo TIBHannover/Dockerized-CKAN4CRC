@@ -25,7 +25,7 @@ then
     if [ "$HTPASSWD_USER" ] || [ "$HTPASSWD_PASSWORD" ]
     then
       # Generate htpasswd file for basicauth
-      htpasswd -d -b -c /srv/app/.htpasswd $HTPASSWD_USER $HTPASSWD_PASSWORD
+      htpasswd -d -b -c /usr/lib/ckan/default/.htpasswd $HTPASSWD_USER $HTPASSWD_PASSWORD
       # Start supervisord
       supervisord --configuration /etc/supervisord.conf &
       # Start uwsgi with basicauth

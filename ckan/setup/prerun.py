@@ -6,7 +6,7 @@ import urllib3
 import time
 import re
 
-ckan_ini = os.environ.get('CKAN_INI', '/srv/app/ckan.ini')
+ckan_ini = os.environ.get('CKAN_INI', '/usr/lib/ckan/default/config/ckan.ini')
 
 RETRY = 5
 

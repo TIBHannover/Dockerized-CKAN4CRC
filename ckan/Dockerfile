@@ -23,8 +23,11 @@ ENV CKAN_CONFIG=ckan.ini
 ENV CKAN_STORAGE_PATH=/var/lib/ckan
 ENV SRC_DIR=/usr/lib/ckan/default/src 
 ENV ckan-pip=/usr/lib/ckan/default/bin/pip
+ENV CKAN_CONFIG_PATH=/usr/lib/ckan/default/config/ckan.ini
 ENV CKAN_GIT=https://github.com/ckan/ckan.git
 ENV CKAN_VERSION=ckan-2.9.0
+ENV CKAN_Site_Url="http://localhost:5000"
+
 
 WORKDIR ${APP_DIR}}
 
@@ -56,7 +59,8 @@ RUN cd ${APP_DIR} && \
     cp who.ini ${APP_DIR} && \
     # ${ckan-pip} install --ignore-installed --no-binary :all: -r  requirements.txt && \
     ${ckan-pip} install -r  requirements.txt && \
-    ckan generate config ${APP_DIR}/config/${CKAN_CONFIG}
+    ckan generate config ${APP_DIR}/config/${CKAN_CONFIG} && \
+    ckan config-tool ${CKAN_CONFIG_PATH} "ckan.site_url = ${CKAN_Site_Url}"
 
 
 # Install and configure supervisor
