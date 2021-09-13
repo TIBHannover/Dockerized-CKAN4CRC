@@ -60,7 +60,9 @@ RUN cd ${APP_DIR} && \
     # ${ckan-pip} install --ignore-installed --no-binary :all: -r  requirements.txt && \
     ${ckan-pip} install -r  requirements.txt && \
     ckan generate config ${APP_DIR}/config/${CKAN_CONFIG} && \
-    ckan config-tool ${CKAN_CONFIG_PATH} "ckan.site_url = ${CKAN_Site_Url}"
+    ckan config-tool ${CKAN_CONFIG_PATH} "ckan.site_url = ${CKAN_Site_Url}" && \
+    ckan config-tool ${CKAN_CONFIG_PATH} sqlalchemy.url=postgresql://ckan:1234@db/ckan && \
+    ckan config-tool ${CKAN_CONFIG_PATH} solr_url=http://solr:8983/solr/ckan 
 
 
 # Install and configure supervisor
