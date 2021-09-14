@@ -28,6 +28,9 @@ ENV CKAN_GIT=https://github.com/ckan/ckan.git
 ENV CKAN_VERSION=ckan-2.9.0
 ENV CKAN_Site_Url="http://localhost:5000"
 
+# ARG SOLR_PATH
+ARG DB_PATH
+
 
 WORKDIR ${APP_DIR}}
 
@@ -52,17 +55,26 @@ RUN cd ${APP_DIR} && \
     
 RUN which ${ckan-pip}
 
+# Get CKAN + install the libraries 
 RUN cd ${APP_DIR} && \  
     ${ckan-pip} install -e git+${CKAN_GIT}@${CKAN_VERSION}#egg=ckan && \ 
     ${ckan-pip} install uwsgi && \
     cd ${SRC_DIR}/ckan && \
-    cp who.ini ${APP_DIR} && \
-    # ${ckan-pip} install --ignore-installed --no-binary :all: -r  requirements.txt && \
-    ${ckan-pip} install -r  requirements.txt && \
+    cp who.ini ${APP_DIR}/config && \
+    ${ckan-pip} install -r  requirements.txt 
+
+
+# Create the configuration
+RUN cd ${APP_DIR} && \
     ckan generate config ${APP_DIR}/config/${CKAN_CONFIG} && \
     ckan config-tool ${CKAN_CONFIG_PATH} "ckan.site_url = ${CKAN_Site_Url}" && \
     ckan config-tool ${CKAN_CONFIG_PATH} sqlalchemy.url=postgresql://ckan:1234@db/ckan && \
-    ckan config-tool ${CKAN_CONFIG_PATH} solr_url=http://solr:8983/solr/ckan 
+    ckan config-tool ${CKAN_CONFIG_PATH} solr_url=http://solr:8983/solr && \ 
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.max_resource_size=2000 && \
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.auth.allow_dataset_collaborators=true && \
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.site_id=default && \
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.max_image_size=100 
+
 
 
 # Install and configure supervisor
@@ -91,6 +103,6 @@ RUN chown ckan -R ${APP_DIR}
 
 EXPOSE 5000
 
-HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://localhost:5000/api/3/action/status_show || exit 1
+# HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://localhost:5000/api/3/action/status_show || exit 1
 
-CMD ["ckan","-c","/usr/lib/ckan/default/config/ckan.ini", "run"]
+# CMD ["ckan","-c","/usr/lib/ckan/default/config/ckan.ini", "run"]

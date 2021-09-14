@@ -9,6 +9,27 @@ volumes:
   pg_data:
 
 services:
+  ckan:
+    container_name: ckan
+    tty: true
+    environment: 
+      # - SOLR_PATH=http://solr:8983/solr
+      - DB_PATH=postgresql://ckan:1234@db/ckan
+    build:
+      context: ./ckan
+    depends_on: 
+      db:
+        condition: service_healthy
+      solr:
+        condition: service_healthy
+    ports:
+      - 5000:5000
+
+    volumes:
+      - ckan_config:/usr/lib/ckan/default/config/
+      - ckan_home:/usr/lib/ckan
+      - ckan_storage:/var/lib/ckan
+
   db:
     container_name: db 
     build:
@@ -20,25 +41,28 @@ services:
     environment:
       - DS_RO_PASS=1234
       - POSTGRES_PASSWORD=1234
+      - PGDATA=/var/lib/postgresql/data/pg_data/
+    ports: 
+      - "5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
 
   solr:
     container_name: solr
     build:
       context: ./solr
       dockerfile: ./Dockerfile
-  
-  ckan:
-    container_name: ckan
-    build:
-      context: ./ckan
-    links:
-      - db
-    ports:
-      - "0.0.0.0:5000:5000"
-
-    volumes:
-      - ckan_config:/usr/lib/ckan/default/config/
-      - ckan_home:/usr/lib/ckan
-      - ckan_storage:/var/lib/ckan
+    ports: 
+      - "8983"
+    healthcheck:
+      test: >-
+        curl -s -w "%{http_code}\n" http://localhost:8983/solr -o /dev/null -L \
+        | grep -q "200"
+      interval: 10s
+      timeout: 10s
+      retries: 10
