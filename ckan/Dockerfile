@@ -26,7 +26,7 @@ ENV ckan-pip=/usr/lib/ckan/default/bin/pip
 ENV CKAN_CONFIG_PATH=/usr/lib/ckan/default/config/ckan.ini
 ENV CKAN_GIT=https://github.com/ckan/ckan.git
 ENV CKAN_VERSION=ckan-2.9.0
-ENV CKAN_Site_Url="http://localhost:5000"
+ENV CKAN_Site_Url="http://0.0.0.0:5000"
 
 # ARG SOLR_PATH
 ARG DB_PATH
@@ -69,7 +69,7 @@ RUN cd ${APP_DIR} && \
     ckan generate config ${APP_DIR}/config/${CKAN_CONFIG} && \
     ckan config-tool ${CKAN_CONFIG_PATH} "ckan.site_url = ${CKAN_Site_Url}" && \
     ckan config-tool ${CKAN_CONFIG_PATH} sqlalchemy.url=postgresql://ckan:1234@db/ckan && \
-    ckan config-tool ${CKAN_CONFIG_PATH} solr_url=http://solr:8983/solr && \ 
+    ckan config-tool ${CKAN_CONFIG_PATH} solr_url=http://solr:8983/solr/ckan && \ 
     ckan config-tool ${CKAN_CONFIG_PATH} ckan.max_resource_size=2000 && \
     ckan config-tool ${CKAN_CONFIG_PATH} ckan.auth.allow_dataset_collaborators=true && \
     ckan config-tool ${CKAN_CONFIG_PATH} ckan.site_id=default && \
