@@ -18,7 +18,7 @@ To check the running services:
     > sudo docker ps
 
 Example output:
-![docker ps screenshot](/home/pooya/Pictures/ckan/ckan-docker-ps.png)
+![ckan-docker-ps](/uploads/473c813deb7ac501e9f5aa370091c67d/ckan-docker-ps.png)
 
 
 To stop (Keep the volumes):
