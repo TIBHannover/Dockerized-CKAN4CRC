@@ -4,21 +4,16 @@ The dockerized CKAN for the SFB project.
 
 
 ### current status:
-- Contains the Dockerfile for CKAN base image (runs on debian buster)
+- CKAN is ruuning without problem 
 
 
 ### To-do
-- Build the ckan base image with the plugins used in the SFB project
 
-- Docker-compose for running the needed services:
-    
-    - Nginx
+- Check the docker warnings  related to the Solr service
 
-    - Solr
+- install the needed plugin
 
-    - Datapusher 
-
-    - Postgresql
+- enable datapusher service
 
 ### References
 
