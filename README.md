@@ -6,6 +6,12 @@ The dockerized CKAN for the SFB project.
 ### current status:
 - CKAN is ruuning without problem 
 
+### Docker installation (ubuntu)
+
+- docker engine: https://docs.docker.com/engine/install/ubuntu/
+
+- docker compose: https://docs.docker.com/compose/install/
+
 ### Run
 
 To run the application stack:
