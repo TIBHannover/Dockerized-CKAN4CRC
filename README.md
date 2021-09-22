@@ -14,10 +14,12 @@ The dockerized CKAN for the SFB project.
 
 ### Run
 
-To run the application stack (inside the application root directory):
+To run the application stack (inside the application root directory): 
 
     > sudo docker-compose build
     > sudo docker-compose up -d  
+
+--> **After that open**: http://localhost:8001
 
 To check the running services:
 
@@ -25,6 +27,7 @@ To check the running services:
 
 Example output:
 ![ckan-docker-ps](/uploads/473c813deb7ac501e9f5aa370091c67d/ckan-docker-ps.png)
+
 
 
 To stop (Keep the volumes):
