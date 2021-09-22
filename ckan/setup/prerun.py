@@ -8,7 +8,7 @@ import re
 
 ckan_ini = os.environ.get('CKAN_INI', '/usr/lib/ckan/default/config/ckan.ini')
 
-RETRY = 5
+RETRY = 10
 
 def update_plugins():
 
@@ -38,7 +38,7 @@ def check_datastore_db_connection(retry=None):
 
 
 def check_db_connection(conn_str, retry=None):
-
+    print(conn_str)
     if retry is None:
         retry = RETRY
     elif retry == 0:
@@ -187,8 +187,8 @@ if __name__ == '__main__':
     else:
         check_main_db_connection()
         init_db()
-        update_plugins()
-        check_datastore_db_connection()
-        init_datastore_db()
+        # update_plugins()
+        # check_datastore_db_connection()
+        # init_datastore_db()
         check_solr_connection()
         create_sysadmin()

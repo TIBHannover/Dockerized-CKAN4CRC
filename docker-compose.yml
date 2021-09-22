@@ -22,11 +22,18 @@ services:
   ckan:
     container_name: ckan
     tty: true
-    environment: 
-      # - SOLR_PATH=http://solr:8983/solr
-      - DB_PATH=postgresql://ckan:1234@db/ckan
     build:
       context: ./ckan
+      args:
+       - DB_PATH=${CKAN_SQLALCHEMY_URL}
+       - CKAN_Site_Url=${CKAN_SITE_URL}
+       - SOLR_URL=${CKAN_SOLR_URL}
+       - CKAN_MAX_RESOURCE_SIZE=${CKAN_MAX_RESOURCE_SIZE}
+       - ALLOW_COLLABORATION=${ALLOW_COLLABORATION}
+       - CKAN_SITE_ID=${CKAN_SITE_ID}
+       - CKAN_MAX_IMAGE_SIZE=${CKAN_MAX_IMAGE_SIZE}
+       - REDIS_URL=${REDIS_URL}
+       - APP_DIR=${APP_DIR}
     depends_on: 
       db:
         condition: service_healthy

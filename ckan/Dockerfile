@@ -10,6 +10,7 @@ RUN apt-get -q -y update && apt-get -q -y upgrade && DEBIAN_FRONTEND=noninteract
     libpq-dev \
     libxml2-dev \
     libxslt-dev \
+    nano \
     gcc \
     make \
     g++ \
@@ -19,18 +20,23 @@ RUN apt-get -q -y update && apt-get -q -y upgrade && DEBIAN_FRONTEND=noninteract
     && \
     apt-get -q clean 
 
-ENV APP_DIR=/usr/lib/ckan/default
 ENV CKAN_CONFIG=ckan.ini
-ENV CKAN_STORAGE_PATH=/var/lib/ckan
 ENV SRC_DIR=/usr/lib/ckan/default/src 
 ENV ckan-pip=/usr/lib/ckan/default/bin/pip
 ENV CKAN_CONFIG_PATH=/usr/lib/ckan/default/config/ckan.ini
 ENV CKAN_GIT=https://github.com/ckan/ckan.git
 ENV CKAN_VERSION=ckan-2.9.0
-ENV CKAN_Site_Url="http://localhost"
 
-# ARG SOLR_PATH
+
+ARG APP_DIR
+ARG CKAN_Site_Url
 ARG DB_PATH
+ARG SOLR_URL
+ARG CKAN_MAX_RESOURCE_SIZE
+ARG CKAN_MAX_IMAGE_SIZE
+ARG ALLOW_COLLABORATION
+ARG CKAN_SITE_ID
+ARG REDIS_URL
 
 
 WORKDIR ${APP_DIR}
@@ -69,15 +75,15 @@ RUN cd ${APP_DIR} && \
 RUN cd ${APP_DIR} && \
     ckan generate config ${APP_DIR}/config/${CKAN_CONFIG} && \
     ckan config-tool ${CKAN_CONFIG_PATH} "ckan.site_url = ${CKAN_Site_Url}" && \
-    ckan config-tool ${CKAN_CONFIG_PATH} sqlalchemy.url=postgresql://ckan:1234@db/ckan && \
-    ckan config-tool ${CKAN_CONFIG_PATH} solr_url=http://solr:8983/solr/ckan && \ 
-    ckan config-tool ${CKAN_CONFIG_PATH} ckan.max_resource_size=2000 && \
-    ckan config-tool ${CKAN_CONFIG_PATH} ckan.auth.allow_dataset_collaborators=true && \
-    ckan config-tool ${CKAN_CONFIG_PATH} ckan.site_id=default && \
-    ckan config-tool ${CKAN_CONFIG_PATH} ckan.max_image_size=100 && \
+    ckan config-tool ${CKAN_CONFIG_PATH} sqlalchemy.url=${DB_PATH} && \
+    ckan config-tool ${CKAN_CONFIG_PATH} solr_url=${SOLR_URL} && \ 
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.max_resource_size=${CKAN_MAX_RESOURCE_SIZE} && \
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.auth.allow_dataset_collaborators=${ALLOW_COLLABORATION} && \
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.site_id=${CKAN_SITE_ID} && \
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.max_image_size=${CKAN_MAX_IMAGE_SIZE} && \
     ckan config-tool ${CKAN_CONFIG_PATH} ckan.storage_path=${APP_DIR}/data && \
     ckan config-tool ${CKAN_CONFIG_PATH} ckan.webassets.path=${APP_DIR}/webassets && \
-    ckan config-tool ${CKAN_CONFIG_PATH} ckan.redis.url=redis://redis:6379
+    ckan config-tool ${CKAN_CONFIG_PATH} ckan.redis.url=${REDIS_URL}
  
 
 
@@ -89,8 +95,10 @@ RUN groupadd ckan && \
     useradd -g ckan ckan
 
 # Create local storage folder
-RUN mkdir -p $CKAN_STORAGE_PATH && \
-    chown -R ckan:ckan $CKAN_STORAGE_PATH
+RUN mkdir -p ${APP_DIR}/data 
+
+# Create webassets folder
+RUN mkdir -p ${APP_DIR}/webassets
 
 # Create entrypoint directory for children image scripts
 ONBUILD RUN mkdir /docker-entrypoint.d
@@ -103,6 +111,6 @@ EXPOSE 8080
 
 RUN service supervisor restart
 COPY ./setup/ckan-uwsgi.conf /etc/supervisor/conf.d/
-RUN service supervisor start
 
+# CMD ["/usr/lib/ckan/default/config/start_ckan.sh"] 
 # CMD ["service","supervisor", "start"]
