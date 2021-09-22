@@ -26,6 +26,9 @@ ENV ckan-pip=/usr/lib/ckan/default/bin/pip
 ENV CKAN_CONFIG_PATH=/usr/lib/ckan/default/config/ckan.ini
 ENV CKAN_GIT=https://github.com/ckan/ckan.git
 ENV CKAN_VERSION=ckan-2.9.0
+ENV CKAN__PLUGINS='image_view text_view recline'
+ENV CKAN_SQLALCHEMY_URL=postgresql://ckan:1234@db/ckan
+ENV CKAN_SOLR_URL=http://solr:8983/solr/ckan
 
 
 ARG APP_DIR
@@ -37,7 +40,6 @@ ARG CKAN_MAX_IMAGE_SIZE
 ARG ALLOW_COLLABORATION
 ARG CKAN_SITE_ID
 ARG REDIS_URL
-
 
 WORKDIR ${APP_DIR}
 
@@ -112,5 +114,5 @@ EXPOSE 8080
 RUN service supervisor restart
 COPY ./setup/ckan-uwsgi.conf /etc/supervisor/conf.d/
 
+ENTRYPOINT ["/usr/lib/ckan/default/config/start_ckan.sh"]
 # CMD ["/usr/lib/ckan/default/config/start_ckan.sh"] 
-# CMD ["service","supervisor", "start"]

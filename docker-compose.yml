@@ -54,14 +54,14 @@ services:
     container_name: db 
     build:
       context: ./postgresql
-      dockerfile: .//Dockerfile
+      dockerfile: ./Dockerfile
       args:
-        - DS_RO_PASS=1234
-        - POSTGRES_PASSWORD=1234
+        - PG_PASSWORD=${POSTGRES_PASSWORD}
+        - PG_USER=${POSTGRES_USER}
+        - PG_DB=${POSTGRES_DB}
+        - PG_HOST_AUTH_METHOD=${POSTGRES_HOST_AUTH_METHOD}
     environment:
-      - DS_RO_PASS=1234
-      - POSTGRES_PASSWORD=1234
-      - PGDATA=/var/lib/postgresql/data/pg_data/
+      - PGDATA=${POSTGRES_VOLUME_PATH}
     ports: 
       - "5432"
     networks:
