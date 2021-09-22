@@ -27,7 +27,7 @@ ENV ckan-pip=/usr/lib/ckan/default/bin/pip
 ENV CKAN_CONFIG_PATH=/usr/lib/ckan/default/config/ckan.ini
 ENV CKAN_GIT=https://github.com/ckan/ckan.git
 ENV CKAN_VERSION=ckan-2.9.0
-ENV CKAN_Site_Url="http://localhost:5000"
+ENV CKAN_Site_Url="http://localhost"
 
 # ARG SOLR_PATH
 ARG DB_PATH
@@ -98,11 +98,11 @@ ONBUILD RUN mkdir /docker-entrypoint.d
 RUN chown ckan -R ${APP_DIR}
 RUN chmod -R u=rwx,g=rwx ${APP_DIR}
 
-EXPOSE 5000
-EXPOSE 8080
+# WSGI port
+EXPOSE 8080  
 
 RUN service supervisor restart
 COPY ./setup/ckan-uwsgi.conf /etc/supervisor/conf.d/
 RUN service supervisor start
 
-# CMD ["ckan","-c","/usr/lib/ckan/default/config/ckan.ini", "run"]
+# CMD ["service","supervisor", "start"]
