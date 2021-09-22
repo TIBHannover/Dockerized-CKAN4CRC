@@ -14,7 +14,7 @@ The dockerized CKAN for the SFB project.
 
 ### Run
 
-To run the application stack:
+To run the application stack (inside the application root directory):
 
     > sudo docker-compose build
     > sudo docker-compose up -d  
