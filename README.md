@@ -1,10 +1,10 @@
 # Dockerized CKAN4SFB
 
-The dockerized CKAN for the SFB project. 
+The dockerized CKAN for the CRC (SFB) project. 
 
 
 ### current status:
-- CKAN is ruuning without problem 
+- CKAN is running without problem 
 
 ### Docker installation (ubuntu)
 
@@ -21,7 +21,8 @@ To run the application stack (inside the application root directory):
 
 --> **After that open**: http://localhost:8001
 
-To check the running services:
+
+**To check the running services:**
 
     > sudo docker ps
 
@@ -29,12 +30,23 @@ Example output:
 ![ckan-docker-ps](/uploads/473c813deb7ac501e9f5aa370091c67d/ckan-docker-ps.png)
 
 
+**To access to the ckan servive bash:**
+(for using the ckan CLI commands)
 
-To stop (Keep the volumes):
+    > sudo docker exec -it ckan bash
+
+Example CLI:
+
+    container:APP_DIR> source bin/activate
+    # create test data
+    container:APP_DIR> ckan -c config/ckan.ini seed basic
+
+
+**To stop (Keep the volumes):**
 
     > sudo docker-compose down
 
-To stop (Delete the volumes):
+**To stop (Delete the volumes):**
 
     > sudo docker-compose down -v
 
