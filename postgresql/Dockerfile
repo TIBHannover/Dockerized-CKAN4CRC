@@ -15,7 +15,7 @@ ENV POSTGRES_DB=${PG_DB}
 ENV POSTGRES_USER=${PG_USER}
 ENV POSTGRES_PASSWORD=${PG_PASSWORD}
 ENV POSTGRES_HOST_AUTH_METHOD=${PG_HOST_AUTH_METHOD}
-# ARG DS_RO_PASS
+
 
 # Include datastore setup scripts
 ADD  docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
