@@ -1,4 +1,4 @@
-# Dockerized CKAN4SFB
+# Dockerized CKAN4CRC
 
 The dockerized CKAN for the CRC (SFB) project. 
 
