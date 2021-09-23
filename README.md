@@ -3,9 +3,6 @@
 The dockerized CKAN for the CRC (SFB) project. 
 
 
-### current status:
-- CKAN is running without problem 
-
 ### Docker installation (ubuntu)
 
 - docker engine: https://docs.docker.com/engine/install/ubuntu/
