@@ -2,6 +2,23 @@
 
 The dockerized CKAN for the CRC (SFB) project. 
 
+**Included CKAN Plugins**
+
+- `multiuploader`: 
+https://github.com/TIBHannover/ckanext-multiuploader
+
+- `tif_imageview`:
+https://github.com/TIBHannover/ckanext-tif-imageview
+
+- `dataset_reference`:
+https://github.com/TIBHannover/ckanext-Dataset-Reference
+
+- `user_manual`
+https://github.com/TIBHannover/ckanext-sfb-layout
+
+- `feature_image`
+https://github.com/TIBHannover/ckanext-sfb-layout
+
 
 ### Docker installation (ubuntu)
 
@@ -17,6 +34,8 @@ To run the application stack (inside the application root directory):
     > sudo docker-compose up -d  
 
 --> **After that open**: http://localhost:8001
+
+**Note** It may takes some time before the ckan become fully functional. You may need to refresh the ckan page a couple of times. This is a time that ckan needs to install plugins and for configuration. 
 
 
 **To check the running services:**
