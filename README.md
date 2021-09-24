@@ -50,7 +50,7 @@ Example CLI:
 
 ### To-do
 
-- Check the docker warnings  related to the Solr service
+- setup the worker
 
 - install the needed plugin
 
