@@ -16,15 +16,26 @@ ckan -c /usr/lib/ckan/default/config/ckan.ini search-index rebuild
 #### Installing the needed extensions ###
 cd /usr/lib/ckan/default/src/
 
+# ckanext-multiuploader
+git clone https://github.com/TIBHannover/ckanext-multiuploader.git
+cd ckanext-multiuploader/
+git checkout main
+pip install -r requirements.txt
+python setup.py develop
+ckan config-tool /usr/lib/ckan/default/config/ckan.ini ckan.plugins='image_view text_view multiuploader'
+cd /usr/lib/ckan/default/src
+
+
 # ckanext-Dataset-Reference
 git clone https://github.com/TIBHannover/ckanext-Dataset-Reference.git
 cd ckanext-Dataset-Reference/
 git checkout main
 pip install -r requirements.txt
 python setup.py develop
-ckan config-tool /usr/lib/ckan/default/config/ckan.ini ckan.plugins='image_view text_view  dataset_reference'
+ckan config-tool /usr/lib/ckan/default/config/ckan.ini ckan.plugins='image_view text_view multiuploader dataset_reference'
 ckan -c /usr/lib/ckan/default/config/ckan.ini db upgrade -p 'dataset_reference'
 cd /usr/lib/ckan/default/src
+
 
 
 
