@@ -46,7 +46,7 @@ Example output:
 ![ckan-docker-ps](/uploads/473c813deb7ac501e9f5aa370091c67d/ckan-docker-ps.png)
 
 
-**To access to the ckan servive bash:**
+**To access to the ckan service bash:**
 (for using the ckan CLI commands)
 
     > sudo docker exec -it ckan bash
