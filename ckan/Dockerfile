@@ -115,4 +115,3 @@ RUN service supervisor restart
 COPY ./setup/ckan-uwsgi.conf /etc/supervisor/conf.d/
 
 ENTRYPOINT ["/usr/lib/ckan/default/config/start_ckan.sh"]
-# CMD ["/usr/lib/ckan/default/config/start_ckan.sh"] 
