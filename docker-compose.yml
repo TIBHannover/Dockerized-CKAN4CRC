@@ -5,6 +5,7 @@ volumes:
   ckan_home:
   ckan_storage:
   pg_data:
+  pg_datapusher_data:
 
 services:
   nginx:
@@ -49,6 +50,19 @@ services:
       - ckan_config:/usr/lib/ckan/default/config/
       - ckan_home:/usr/lib/ckan
       - ckan_storage:/var/lib/ckan
+  
+  datapusher:
+    container_name: datapusher
+    tty: true
+    build:
+      context: ./datapusher
+    depends_on: 
+      db_datapusher:
+        condition: service_healthy
+    ports:
+      - "8800"
+    networks:
+      - backend
 
   db:
     container_name: db 
@@ -73,6 +87,31 @@ services:
       interval: 10s
       timeout: 10s
       retries: 10
+  
+  db_datapusher:
+    container_name: db_datapusher 
+    build:
+      context: ./postgresql
+      dockerfile: ./Dockerfile
+      args:
+        - PG_PASSWORD=1234
+        - PG_USER=datapusher_jobs
+        - PG_DB=datapusher_jobs
+        - PG_HOST_AUTH_METHOD=${POSTGRES_HOST_AUTH_METHOD}
+    environment:
+      - PGDATA=/var/lib/postgresql/data/datapusher_pg_data/
+    ports: 
+      - "5432"
+    networks:
+      - backend
+    volumes:
+      - pg_datapusher_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
 
   solr:
     container_name: solr

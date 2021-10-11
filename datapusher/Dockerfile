@@ -13,13 +13,13 @@ RUN apt-get -q -y update && apt-get -q -y upgrade && DEBIAN_FRONTEND=noninteract
     musl-dev \
     python3-dev \
     libffi-dev \
-    openssl-dev \
     libxml2-dev \
     libxslt1-dev \
-    rust \
     cargo \
     build-essential \
-    python3-pip
+    python3-pip \
+    supervisor \
+    libpq-dev
 
 
 ENV SRC_DIR=/srv/app/src
@@ -38,6 +38,13 @@ RUN cd ${SRC_DIR}/datapusher/  && \
 
 RUN pip3 install uwsgi
 
-RUN groupadd www-data && \
-    useradd -g www-data www-data
+RUN pip3 install psycopg2
 
+COPY ./config ${SRC_DIR}/datapusher/deployment/
+
+RUN chmod +x /srv/app/src/datapusher/deployment/start.sh
+
+RUN service supervisor restart
+COPY ./supervisor/datapusher-uwsgi.conf /etc/supervisor/conf.d/
+
+ENTRYPOINT ["/srv/app/src/datapusher/deployment/start.sh"]
