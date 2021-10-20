@@ -41,6 +41,15 @@ pip install -r requirements.txt
 python setup.py develop
 cd /usr/lib/ckan/default/src
 
+# ckanext-organization-group
+git clone https://github.com/TIBHannover/ckanext-organization-group.git
+cd ckanext-organization-group/
+git checkout main
+pip install -r requirements.txt
+python setup.py develop
+cd /usr/lib/ckan/default/src
+
+
 # ckanext-sfb-layout
 git clone https://github.com/TIBHannover/ckanext-sfb-layout.git
 cd ckanext-sfb-layout/
@@ -52,7 +61,7 @@ cd /usr/lib/ckan/default/src
 
 
 # Enable and configure all plugins
-ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.plugins=image_view text_view multiuploader dataset_reference tif_imageview user_manual feature_image'
+ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.plugins=image_view text_view multiuploader dataset_reference tif_imageview user_manual feature_image organization_group'
 ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.views.default_views=image_view text_view recline_view pdf_view tif_imageview video_view'
 ckan -c /usr/lib/ckan/default/config/ckan.ini db upgrade -p 'dataset_reference'
 
