@@ -19,6 +19,12 @@ https://github.com/TIBHannover/ckanext-sfb-layout
 - `feature_image`
 https://github.com/TIBHannover/ckanext-sfb-layout
 
+- `cancel_dataset_creation`
+https://github.com/TIBHannover/Ckanext-Cancel-Dataset-Creation
+
+- `organization_group`
+https://github.com/TIBHannover/ckanext-organization-group
+
 
 ### Docker installation (ubuntu)
 
@@ -70,8 +76,6 @@ Example CLI:
 ### To-do
 
 - setup the worker
-
-- install the needed plugin
 
 - enable datapusher service
 
