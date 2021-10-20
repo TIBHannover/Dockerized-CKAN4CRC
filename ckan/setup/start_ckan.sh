@@ -37,8 +37,7 @@ cd /usr/lib/ckan/default/src
 git clone https://github.com/TIBHannover/ckanext-tif-imageview.git
 cd ckanext-tif-imageview/
 git checkout main
-pip install pillow
-# pip install -r requirements.txt
+pip install -r requirements.txt
 python setup.py develop
 cd /usr/lib/ckan/default/src
 
