@@ -79,7 +79,7 @@ chown ckan:root -R /usr/lib/ckan/default/data/
 chmod g=rwx -R /usr/lib/ckan/default/data/
 
 # start ckan wsgi
-service supervisor start
+/etc/init.d/supervisor start
 
 # this keeps the container running
 tail -f /dev/null
