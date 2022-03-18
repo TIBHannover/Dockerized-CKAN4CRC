@@ -51,6 +51,11 @@ To run the application stack (inside the application root directory):
 
 --> **After that open**: http://localhost:8001
 
+Default credentials:
+- username: admin
+
+- password: 11111111
+
 **Note** It may takes some time before the ckan become fully functional. You may need to refresh the ckan page a couple of times. This is a time that ckan needs to install plugins and for configuration. 
 
 
