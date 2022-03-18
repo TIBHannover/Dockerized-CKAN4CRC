@@ -13,11 +13,27 @@ https://github.com/TIBHannover/ckanext-tif-imageview
 - `dataset_reference`:
 https://github.com/TIBHannover/ckanext-Dataset-Reference
 
-- `user_manual`
-https://github.com/TIBHannover/ckanext-sfb-layout
+- `feature_image`
+https://github.com/TIBHannover/ckanext-feature-image.git
+
+- `cancel_dataset_creation`
+https://github.com/TIBHannover/Ckanext-Cancel-Dataset-Creation
+
+- `organization_group`
+https://github.com/TIBHannover/ckanext-organization-group
+
+- `ckanext-custom-dataset-metadata`
+https://github.com/TIBHannover/ckanext-custom-dataset-metadata.git
 
 - `feature_image`
-https://github.com/TIBHannover/ckanext-sfb-layout
+https://github.com/TIBHannover/ckanext-feature-image.git
+
+- `ckanext-dataset-metadata-automation`
+https://github.com/TIBHannover/ckanext-dataset-metadata-automation.git
+
+- `ckanext-close-for-guests`
+https://github.com/TIBHannover/ckanext-close-for-guests.git
+
 
 
 ### Docker installation (ubuntu)
@@ -70,8 +86,6 @@ Example CLI:
 ### To-do
 
 - setup the worker
-
-- install the needed plugin
 
 - enable datapusher service
 
