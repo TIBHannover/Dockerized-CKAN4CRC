@@ -6,6 +6,9 @@ source bin/activate
 # initiate the ckan DB
 ckan -c /usr/lib/ckan/default/config/ckan.ini db init
 
+# setup test db
+ckan -c test-core.ini datastore set-permissions | -u postgres psql
+
 # add admin user
 ckan -c /usr/lib/ckan/default/config/ckan.ini user add admin email=admin@example.com name=admin password=11111111
 ckan -c /usr/lib/ckan/default/config/ckan.ini sysadmin add admin
