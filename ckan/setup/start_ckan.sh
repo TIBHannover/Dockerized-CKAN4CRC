@@ -6,6 +6,9 @@ source bin/activate
 # initiate the ckan DB
 ckan -c /usr/lib/ckan/default/config/ckan.ini db init
 
+# dev requirenment
+pip install -r /usr/lib/ckan/default/src/ckan/dev-requirements.txt
+
 # setup test db
 ckan -c test-core.ini datastore set-permissions | -u postgres psql
 

@@ -70,8 +70,7 @@ RUN cd ${APP_DIR} && \
     ${ckan-pip} install uwsgi && \
     cd ${SRC_DIR}/ckan && \
     cp who.ini ${APP_DIR}/config && \
-    ${ckan-pip} install -r  requirements.txt \
-    ${ckan-pip} install -r  dev-requirements.txt 
+    ${ckan-pip} install -r  requirements.txt
 
 
 # Create the configuration
