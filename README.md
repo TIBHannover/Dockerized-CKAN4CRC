@@ -1,6 +1,7 @@
 # Dockerized CKAN4CRC
 
-The dockerized CKAN for the CRC (SFB) project. 
+The dockerized CKAN for the CRC (SFB) project. This code is adopted from the original CKAN docker.
+Modifications made to add CRC-related components.
 
 **Included CKAN Plugins**
 
