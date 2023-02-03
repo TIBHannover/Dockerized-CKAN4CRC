@@ -34,6 +34,15 @@ https://github.com/TIBHannover/ckanext-dataset-metadata-automation.git
 - `ckanext-close-for-guests`
 https://github.com/TIBHannover/ckanext-close-for-guests.git
 
+- `ckanext-sfb-layout`
+https://github.com/TIBHannover/ckanext_sfb_layout.git
+
+- `ckanext-harvester`
+https://github.com/ckan/ckanext-harvest.git
+
+- `ckanext-dcat`
+https://github.com/ckan/ckanext-dcat.git
+
 
 
 ### Docker installation (ubuntu)
@@ -88,11 +97,6 @@ Example CLI:
     > sudo docker-compose down -v
 
 
-### To-do
-
-- setup the worker
-
-- enable datapusher service
 
 ### References
 
