@@ -6,6 +6,8 @@ source bin/activate
 # initiate the ckan DB
 ckan -c /usr/lib/ckan/default/config/ckan.ini db init
 
+python -m pip install --upgrade pip
+
 # dev requirenment
 pip install -r /usr/lib/ckan/default/src/ckan/dev-requirements.txt
 
@@ -13,7 +15,7 @@ pip install -r /usr/lib/ckan/default/src/ckan/dev-requirements.txt
 ckan -c /usr/lib/ckan/default/src/ckan/test-core.ini datastore set-permissions | -u postgres psql
 
 # add admin user
-ckan -c /usr/lib/ckan/default/config/ckan.ini user add admin email=admin@example.com name=admin password=1234
+ckan -c /usr/lib/ckan/default/config/ckan.ini user add admin email=admin@example.com name=admin password=12345678
 ckan -c /usr/lib/ckan/default/config/ckan.ini sysadmin add admin
 
 # create search index
@@ -103,10 +105,37 @@ pip install -r requirements.txt
 python setup.py develop
 cd /usr/lib/ckan/default/src
 
+# ckanext-sfb-layout
+git clone https://github.com/TIBHannover/ckanext_sfb_layout.git
+cd ckanext_sfb_layout/
+git checkout master
+pip install -r requirements.txt
+python setup.py develop
+cd /usr/lib/ckan/default/src
+
+# harvester
+git clone https://github.com/ckan/ckanext-harvest.git
+cd ckanext-harvest/
+git checkout master
+pip install -r requirements.txt
+python setup.py develop
+cd /usr/lib/ckan/default/src
+
+# dcat
+git clone https://github.com/ckan/ckanext-dcat.git
+cd ckanext-dcat/
+git checkout master
+pip install -r requirements.txt
+python setup.py develop
+cd /usr/lib/ckan/default/src
+
 
 # Enable and configure all plugins
-ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.plugins=image_view text_view multiuploader dataset_reference tif_imageview organization_group cancel_dataset_creation custom_dataset_type feature_image dataset_metadata_automation close_for_guests'
+ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.plugins=sfb_layout harvest ckan_harvester datastore datapusher structured_data  dcat dcat_rdf_harvester dcat_json_harvester dcat_json_interface image_view text_view multiuploader dataset_reference tif_imageview organization_group cancel_dataset_creation custom_dataset_type feature_image dataset_metadata_automation close_for_guests'
 ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.views.default_views=image_view text_view recline_view pdf_view tif_imageview video_view'
+ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.datastore.write_url = postgresql://ckan:1234@db/datastore'
+ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.datastore.read_url = postgresql://datastore_ro:datastore@db/datastore'
+ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.datapusher.url = http://datapusher:8800/'
 ckan -c /usr/lib/ckan/default/config/ckan.ini db upgrade -p 'dataset_reference'
 
 
