@@ -1,23 +1,43 @@
 #!/bin/bash
 
-# activate the python venv for ckan
-source bin/activate
+# Run the prerun script to init CKAN and create the default admin user
+sudo -u ckan -EH python3 prerun.py
 
-# initiate the ckan DB
-ckan -c /usr/lib/ckan/default/config/ckan.ini db init
+# Run any startup scripts provided by images extending this one
+if [[ -d "/docker-entrypoint.d" ]]
+then
+    for f in /docker-entrypoint.d/*; do
+        case "$f" in
+            *.sh)     echo "$0: Running init file $f"; . "$f" ;;
+            *.py)     echo "$0: Running init file $f"; python3 "$f"; echo ;;
+            *)        echo "$0: Ignoring $f (not an sh or py file)" ;;
+        esac
+        echo
+    done
+fi
 
-# dev requirenment
-pip install -r /usr/lib/ckan/default/src/ckan/dev-requirements.txt
+# Set the common uwsgi options
+UWSGI_OPTS="--plugins http,python \
+            --socket /tmp/uwsgi.sock \
+            --wsgi-file /srv/app/wsgi.py \
+            --module wsgi:application \
+            --uid 92 --gid 92 \
+            --http 0.0.0.0:5000 \
+            --master --enable-threads \
+            --lazy-apps \
+            -p 2 -L -b 32768 --vacuum \
+            --harakiri $UWSGI_HARAKIRI"
 
-# setup test db
-ckan -c /usr/lib/ckan/default/src/ckan/test-core.ini datastore set-permissions | -u postgres psql
+if [ $? -eq 0 ]
+then
+    # Start supervisord
+    supervisord --configuration /etc/supervisord.conf &
+    # Start uwsgi
+    sudo -u ckan -EH uwsgi $UWSGI_OPTS
+else
+  echo "[prerun] failed...not starting CKAN."
+fi
 
-# add admin user
-ckan -c /usr/lib/ckan/default/config/ckan.ini user add admin email=admin@example.com name=admin password=11111111
-ckan -c /usr/lib/ckan/default/config/ckan.ini sysadmin add admin
-
-# create search index
-ckan -c /usr/lib/ckan/default/config/ckan.ini search-index rebuild
 
 #### Installing the needed extensions ###
 cd /usr/lib/ckan/default/src/
@@ -108,16 +128,4 @@ cd /usr/lib/ckan/default/src
 ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.plugins=image_view text_view multiuploader dataset_reference tif_imageview organization_group cancel_dataset_creation custom_dataset_type feature_image dataset_metadata_automation close_for_guests'
 ckan config-tool /usr/lib/ckan/default/config/ckan.ini 'ckan.views.default_views=image_view text_view recline_view pdf_view tif_imageview video_view'
 ckan -c /usr/lib/ckan/default/config/ckan.ini db upgrade -p 'dataset_reference'
-
-
-# change storage permission
-chown ckan:root -R /usr/lib/ckan/default/data/
-chmod g=rwx -R /usr/lib/ckan/default/data/
-
-# start ckan wsgi
-/etc/init.d/supervisor start
-
-# this keeps the container running
-tail -f /dev/null
-
 
